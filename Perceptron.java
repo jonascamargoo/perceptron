@@ -1,51 +1,64 @@
+import java.util.Random;
+
 public class Perceptron {
-    private double [][] weights;
-    private int qtdIn, qtdOut, ni;
+    private double[][] weights;
+    private double learningRate;
+    private int numInputs;
+    private int numOutputs;
 
-    public Perceptron(input, output, ni) {
-        this.qtdIn = input;
-        this.qtdOut = output;
-        this.weights = new double[output][input];
-        // Initialize weights to small random values
-
-
-
+    public Perceptron(int numInputs, int numOutputs, double learningRate) {
+        this.numInputs = numInputs;
+        this.numOutputs = numOutputs;
+        this.learningRate = learningRate;
+        this.weights = new double[numOutputs][numInputs + 1];
         initializeWeights();
     }
 
-    public double[] treinar(double[] xin, double[] y) {
-        double []x = new double[xin.length + 1];
-        x[0] = 1; // Bias term
-        // copiar os demais valores de xin
-
-        // executa a amostra na rede
-        double[] out = new double[this.qtdOut];
-        for(j=0; i < qtdOut + 1; j++) {
-            double u = 0;
-            for(i=0; i <qtdIn + 1; i++) {
-                u += x[i] * weights[i][j];
-            }
-            out[j] = 1 / (1 + Math.exp(-u)); // Sigmoid activation function
-
-        }
-        double [][] deltaW = new double[w.k=length][w[0].length];
-        for(j=0; j < qtdOut; j++) {
-            for(i=0; i < qtdIn + 1; i++) {
-                deltaW[i][j] = (y[j] - out[j]) * ni * x[i];
-
+    private void initializeWeights() {
+        Random rand = new Random();
+        for (int i = 0; i < numOutputs; i++) {
+            for (int j = 0; j < numInputs + 1; j++) {
+                weights[i][j] = rand.nextDouble() - 0.5;
             }
         }
-
-        double[] out = new double[this.qtdOut];
-        for(j=0; j < qtdOut; j++) {
-            double u = 0;
-            for(i=0; i < qtdIn + 1; i++) {
-                u += x[i] * weights[i][j];
-            out[j] = 1 / (1 + Math.exp(-u)); 
-            }
-        return out;
     }
 
+    public double[] treinar(double[] inputs, double[] expectedOutput) {
+        double[] x = new double[inputs.length + 1];
+        x[0] = 1; // Bias term
+        System.arraycopy(inputs, 0, x, 1, inputs.length);
 
+        double[] outputs = new double[numOutputs];
+        for (int j = 0; j < numOutputs; j++) {
+            double u = 0;
+            for (int i = 0; i < numInputs + 1; i++) {
+                u += x[i] * weights[j][i];
+            }
+            outputs[j] = 1 / (1 + Math.exp(-u));
+        }
 
+        for (int j = 0; j < numOutputs; j++) {
+            double error = expectedOutput[j] - outputs[j];
+            for (int i = 0; i < numInputs + 1; i++) {
+                weights[j][i] += learningRate * error * x[i];
+            }
+        }
+        return outputs;
+    }
+
+    public double[] executar(double[] inputs) {
+        double[] x = new double[inputs.length + 1];
+        x[0] = 1; // Bias term
+        System.arraycopy(inputs, 0, x, 1, inputs.length);
+
+        double[] outputs = new double[numOutputs];
+        for (int j = 0; j < numOutputs; j++) {
+            double u = 0;
+            for (int i = 0; i < numInputs + 1; i++) {
+                u += x[i] * weights[j][i];
+            }
+            outputs[j] = 1 / (1 + Math.exp(-u));
+        }
+        return outputs;
+    }
 }
