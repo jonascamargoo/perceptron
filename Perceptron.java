@@ -1,64 +1,72 @@
 import java.util.Random;
 
 public class Perceptron {
-    private double[][] weights;
-    private double learningRate;
-    private int numInputs;
-    private int numOutputs;
+    private double[][] pesos;
+    private double taxaDeAprendizado;
+    private int numeroDeEntradas;
+    private int numeroDeSaidas;
 
-    public Perceptron(int numInputs, int numOutputs, double learningRate) {
-        this.numInputs = numInputs;
-        this.numOutputs = numOutputs;
-        this.learningRate = learningRate;
-        this.weights = new double[numOutputs][numInputs + 1];
-        initializeWeights();
+    public Perceptron(int numeroDeEntradas, int numeroDeSaidas, double taxaDeAprendizado) {
+        this.numeroDeEntradas = numeroDeEntradas;
+        this.numeroDeSaidas = numeroDeSaidas;
+        this.taxaDeAprendizado = taxaDeAprendizado;
+        this.pesos = new double[numeroDeSaidas][numeroDeEntradas + 1];
+        inicializarPesos();
     }
 
-    private void initializeWeights() {
-        Random rand = new Random();
-        for (int i = 0; i < numOutputs; i++) {
-            for (int j = 0; j < numInputs + 1; j++) {
-                weights[i][j] = rand.nextDouble() - 0.5;
+    private void inicializarPesos() {
+        Random aleatorio = new Random();
+        for (int i = 0; i < numeroDeSaidas; i++) {
+            for (int j = 0; j < numeroDeEntradas + 1; j++) {
+                // Inicializa os pesos com valores aleatórios pequenos entre -0.5 e 0.5
+                pesos[i][j] = aleatorio.nextDouble() - 0.5;
             }
         }
     }
 
-    public double[] treinar(double[] inputs, double[] expectedOutput) {
-        double[] x = new double[inputs.length + 1];
-        x[0] = 1; // Bias term
-        System.arraycopy(inputs, 0, x, 1, inputs.length);
+    public double[] treinar(double[] entradas, double[] saidaEsperada) {
+        // Adiciona o termo de bias às entradas
+        double[] x = new double[entradas.length + 1];
+        x[0] = 1; // Termo de bias
+        System.arraycopy(entradas, 0, x, 1, entradas.length);
 
-        double[] outputs = new double[numOutputs];
-        for (int j = 0; j < numOutputs; j++) {
+        // Calcula a saída da rede
+        double[] saidas = new double[numeroDeSaidas];
+        for (int j = 0; j < numeroDeSaidas; j++) {
             double u = 0;
-            for (int i = 0; i < numInputs + 1; i++) {
-                u += x[i] * weights[j][i];
+            for (int i = 0; i < numeroDeEntradas + 1; i++) {
+                u += x[i] * pesos[j][i];
             }
-            outputs[j] = 1 / (1 + Math.exp(-u));
+            // Aplica a função de ativação sigmoide
+            saidas[j] = 1 / (1 + Math.exp(-u));
         }
 
-        for (int j = 0; j < numOutputs; j++) {
-            double error = expectedOutput[j] - outputs[j];
-            for (int i = 0; i < numInputs + 1; i++) {
-                weights[j][i] += learningRate * error * x[i];
+        // Atualiza os pesos com base no erro
+        for (int j = 0; j < numeroDeSaidas; j++) {
+            double erro = saidaEsperada[j] - saidas[j];
+            for (int i = 0; i < numeroDeEntradas + 1; i++) {
+                pesos[j][i] += taxaDeAprendizado * erro * x[i];
             }
         }
-        return outputs;
+        return saidas;
     }
 
-    public double[] executar(double[] inputs) {
-        double[] x = new double[inputs.length + 1];
-        x[0] = 1; // Bias term
-        System.arraycopy(inputs, 0, x, 1, inputs.length);
+    public double[] executar(double[] entradas) {
+        // Adiciona o termo de bias às entradas
+        double[] x = new double[entradas.length + 1];
+        x[0] = 1; // Termo de bias
+        System.arraycopy(entradas, 0, x, 1, entradas.length);
 
-        double[] outputs = new double[numOutputs];
-        for (int j = 0; j < numOutputs; j++) {
+        // Calcula a saída da rede (sem treinar)
+        double[] saidas = new double[numeroDeSaidas];
+        for (int j = 0; j < numeroDeSaidas; j++) {
             double u = 0;
-            for (int i = 0; i < numInputs + 1; i++) {
-                u += x[i] * weights[j][i];
+            for (int i = 0; i < numeroDeEntradas + 1; i++) {
+                u += x[i] * pesos[j][i];
             }
-            outputs[j] = 1 / (1 + Math.exp(-u));
+            // Aplica a função de ativação sigmoide
+            saidas[j] = 1 / (1 + Math.exp(-u));
         }
-        return outputs;
+        return saidas;
     }
 }
