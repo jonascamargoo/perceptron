@@ -51,6 +51,6 @@ def train_and_test(test_name, data, num_inputs, num_outputs):
 
 if __name__ == "__main__":
     train_and_test("AND Logic Gate", AND_GATE_DATA, 2, 1)
-    train_and_test("OR Logic Gate", OR_GATE_DATA, 2, 1)
-    train_and_test("XOR Logic Gate", XOR_GATE_DATA, 2, 1)
-    train_and_test("Robot", ROBOT_DATA, 3, 2)
+    # train_and_test("OR Logic Gate", OR_GATE_DATA, 2, 1)
+    # train_and_test("XOR Logic Gate", XOR_GATE_DATA, 2, 1)
+    # train_and_test("Robot", ROBOT_DATA, 3, 2)

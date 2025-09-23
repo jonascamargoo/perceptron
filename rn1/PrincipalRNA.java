@@ -39,9 +39,9 @@ public class PrincipalRNA {
 
     public static void main(String[] args) {
         treinarETestar("Porta Lógica AND", DADOS_PORTA_AND, 2, 1);
-        treinarETestar("Porta Lógica OR", DADOS_PORTA_OR, 2, 1);
-        treinarETestar("Porta Lógica XOR", DADOS_PORTA_XOR, 2, 1);
-        treinarETestar("Robô", DADOS_ROBO, 3, 2);
+        // treinarETestar("Porta Lógica OR", DADOS_PORTA_OR, 2, 1);
+        // treinarETestar("Porta Lógica XOR", DADOS_PORTA_XOR, 2, 1);
+        // treinarETestar("Robô", DADOS_ROBO, 3, 2);
     }
 
     public static void treinarETestar(String nomeDoTeste, double[][][] dados, int numEntradas, int numSaidas) {
