@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Perceptron {
+public class Perceptron extends RNA {
     private double[][] pesos;
     private double taxaDeAprendizado;
     private int numeroDeEntradas;

@@ -1,4 +1,4 @@
-public class PrincipalRNA {
+public class PerceptronRunner {
 
     // AND
     public static final double[][][] DADOS_PORTA_AND = {
