@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class MLP extends RNA {
 
     private int qtd_in;
@@ -18,9 +20,17 @@ public class MLP extends RNA {
         this.wh = new double[qtd_in + 1][qtd_h];
         this.wo = new double[qtd_h + 1][qtd_out];
 
-        // gerar valores para a matriz de peso
-        // com valores pequenos e aleatórios
-        // sugestão do professor: valores entre -0.3 e 0.3
+        Random aleatorio = new Random();
+        for (int i = 0; i < wh.length; i++) {
+            for (int j = 0; j < wh[0].length; j++) {
+                wh[i][j] = aleatorio.nextDouble() * 0.6 - 0.3;
+            }
+        }
+        for (int i = 0; i < wo.length; i++) {
+            for (int j = 0; j < wo[0].length; j++) {
+                wo[i][j] = aleatorio.nextDouble() * 0.6 - 0.3;
+            }
+        }
 
     }
 
