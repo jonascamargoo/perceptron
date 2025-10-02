@@ -40,21 +40,6 @@ public class MLPRunner {
         {{1, 1, 1}, {1, 0}}
     };
 
-
-    public static void main(String[] args) {
-        // Para o MLP, o teste mais importante é o XOR.
-        // Vamos definir uma arquitetura com:
-        // - 2 neurônios de entrada
-        // - 4 neurônios na camada oculta (um bom ponto de partida)
-        // - 1 neurônio de saída
-        treinarETestar("Porta Lógica XOR", DADOS_PORTA_XOR, 2, 4, 1);
-        
-        // Você também pode testar os outros problemas
-        // treinarETestar("Porta Lógica AND", DADOS_PORTA_AND, 2, 4, 1);
-        // treinarETestar("Porta Lógica OR", DADOS_PORTA_OR, 2, 4, 1);
-        // treinarETestar("Robô", DADOS_ROBO, 3, 5, 2); // Aumentando um pouco a camada oculta para o robô
-    }
-
     public static void treinarETestar(String nomeDoTeste, double[][][] dados, int numEntradas, int numOcultos, int numSaidas) {
         System.out.println("### Treinando e Testando MLP: " + nomeDoTeste + " ###");
         MLP mlp = new MLP(numEntradas, numOcultos, numSaidas, 0.3);
@@ -95,5 +80,19 @@ public class MLPRunner {
                                " Esperado: " + Arrays.toString(amostra[1]));
         }
         System.out.println("########################################\n");
+    }
+
+    public static void main(String[] args) {
+        // Para o MLP, o teste mais importante é o XOR.
+        // Vamos definir uma arquitetura com:
+        // - 2 neurônios de entrada
+        // - 4 neurônios na camada oculta (um bom ponto de partida)
+        // - 1 neurônio de saída
+        treinarETestar("Porta Lógica XOR", DADOS_PORTA_XOR, 2, 4, 1);
+        
+        // Você também pode testar os outros problemas
+        // treinarETestar("Porta Lógica AND", DADOS_PORTA_AND, 2, 4, 1);
+        // treinarETestar("Porta Lógica OR", DADOS_PORTA_OR, 2, 4, 1);
+        // treinarETestar("Robô", DADOS_ROBO, 3, 5, 2); // Aumentando um pouco a camada oculta para o robô
     }
 }

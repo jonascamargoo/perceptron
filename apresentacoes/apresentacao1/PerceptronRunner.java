@@ -6,53 +6,53 @@ public class PerceptronRunner {
 
     public static void main(String[] args) {
         // --- Hiperparâmetros e Configurações ---
-        int NUM_EPOCAS = 10000;
-        double TAXA_APRENDIZADO = 0.1;
+        int NUMERO_DE_EPOCAS = 10000;
+        double TAXA_DE_APRENDIZADO = 0.1;
         String NOME_ARQUIVO_DADOS = "heart_disease_uci.csv"; // O arquivo deve estar na raiz do projeto
 
         try {
-            // 1. Carregar e preparar os dados
-            Dataset dataset = DataReader.loadAndPrepareData(NOME_ARQUIVO_DADOS, 0.2, 42);
+            // 1. Carregar e preparar os dados usando as classes em português
+            ConjuntoDeDados conjuntoDeDados = LeitorDeDados.carregarEPrepararDados(NOME_ARQUIVO_DADOS, 0.2, 42);
             
-            int numEntradas = dataset.X_train.get(0).length;
-            int numSaidas = dataset.y_train.get(0).length;
+            int numEntradas = conjuntoDeDados.X_treino.get(0).length;
+            int numSaidas = conjuntoDeDados.y_treino.get(0).length;
 
             // Instanciar o modelo
-            Perceptron perceptron = new Perceptron(numEntradas, numSaidas, TAXA_APRENDIZADO);
+            Perceptron perceptron = new Perceptron(numEntradas, numSaidas, TAXA_DE_APRENDIZADO);
 
             // 2. Treinar o modelo
-            treinarModelo(perceptron, dataset, NUM_EPOCAS);
+            treinarModelo(perceptron, conjuntoDeDados, NUMERO_DE_EPOCAS);
 
             // 3. Avaliar o modelo treinado
-            avaliarModelo(perceptron, dataset);
+            avaliarModelo(perceptron, conjuntoDeDados);
 
         } catch (IOException e) {
             System.err.println("Erro ao ler o arquivo de dados: " + NOME_ARQUIVO_DADOS);
-            System.err.println("Certifique-se de que o arquivo 'heart_disease_uci.csv' está na pasta raiz do seu projeto.");
+            System.err.println("Certifique-se de que o arquivo '" + NOME_ARQUIVO_DADOS + "' está na pasta raiz do seu projeto.");
             e.printStackTrace();
         }
          System.out.println("\nProcesso finalizado.");
     }
 
-    public static void treinarModelo(Perceptron model, Dataset dataset, int numEpocas) {
+    public static void treinarModelo(Perceptron modelo, ConjuntoDeDados dados, int numEpocas) {
         System.out.println("\n2. Iniciando o treinamento do Perceptron...");
         
         for (int epoca = 0; epoca < numEpocas; epoca++) {
             double erroAproxDaEpoca = 0.0;
             int erroClassDaEpoca = 0;
 
-            for (int i = 0; i < dataset.X_train.size(); i++) {
-                double[] entradas = dataset.X_train.get(i);
-                double[] saidaEsperada = dataset.y_train.get(i);
+            for (int i = 0; i < dados.X_treino.size(); i++) {
+                double[] entradas = dados.X_treino.get(i);
+                double[] saidaEsperada = dados.y_treino.get(i);
                 
-                double[] saidaCalculada = model.treinar(entradas, saidaEsperada);
+                double[] saidaCalculada = modelo.treinar(entradas, saidaEsperada);
 
                 // Cálculo de erro de aproximação
                 erroAproxDaEpoca += Math.abs(saidaEsperada[0] - saidaCalculada[0]);
                 
                 // Cálculo de erro de classificação
-                double saidaThreshold = (saidaCalculada[0] >= 0.5) ? 1.0 : 0.0;
-                if (saidaThreshold != saidaEsperada[0]) {
+                double saidaComLimiar = (saidaCalculada[0] >= 0.5) ? 1.0 : 0.0;
+                if (saidaComLimiar != saidaEsperada[0]) {
                     erroClassDaEpoca++;
                 }
             }
@@ -65,22 +65,22 @@ public class PerceptronRunner {
         System.out.println("Treinamento concluído.");
     }
     
-    public static void avaliarModelo(Perceptron model, Dataset dataset) {
+    public static void avaliarModelo(Perceptron modelo, ConjuntoDeDados dados) {
         System.out.println("\n3. Avaliando o modelo no conjunto de teste...");
         int acertos = 0;
-        for (int i = 0; i < dataset.X_test.size(); i++) {
-            double[] entradas = dataset.X_test.get(i);
-            double[] resultado = model.executar(entradas);
+        for (int i = 0; i < dados.X_teste.size(); i++) {
+            double[] entradas = dados.X_teste.get(i);
+            double[] resultado = modelo.executar(entradas);
             
             // Converte a saída contínua para uma classe (0 ou 1)
             double predicaoFinal = (resultado[0] >= 0.5) ? 1.0 : 0.0;
             
-            if (predicaoFinal == dataset.y_test.get(i)[0]) {
+            if (predicaoFinal == dados.y_teste.get(i)[0]) {
                 acertos++;
             }
         }
         
-        double acuracia = ((double) acertos / dataset.X_test.size()) * 100.0;
+        double acuracia = ((double) acertos / dados.X_teste.size()) * 100.0;
         System.out.printf("-> Acurácia final no conjunto de teste: %.2f%%\n", acuracia);
     }
 }
