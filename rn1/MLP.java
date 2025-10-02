@@ -91,7 +91,7 @@ public class MLP extends RNA {
         }
 
         for( int h = 0; h < wo.length; h++) {
-            for( int j = 0; j < wh[0].length; j++) {
+            for( int j = 0; j < wo[0].length; j++) {
                 wo[h][j] += ni * DO[j] * H[h];
             }
         }
