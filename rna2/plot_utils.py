@@ -1,7 +1,5 @@
-# plot_utils.py
-
 import matplotlib.pyplot as plt
-import os # Importe o módulo 'os'
+import os
 
 def save_error_plot(epoch_count, errors_aprox, errors_class, output_dir="results", filename="grafico_erros.png"):
     """
@@ -14,12 +12,10 @@ def save_error_plot(epoch_count, errors_aprox, errors_class, output_dir="results
         output_dir (str): O nome da pasta onde o gráfico será salvo.
         filename (str): Nome do arquivo para salvar o gráfico.
     """
-    # --- NOVO: Lógica para criar o diretório ---
     if not os.path.exists(output_dir):
         print(f"Criando o diretório: '{output_dir}'")
         os.makedirs(output_dir)
     
-    # Constrói o caminho completo do arquivo
     filepath = os.path.join(output_dir, filename)
     
     print(f"\n4. Salvando o gráfico de erros como '{filepath}'...")
@@ -32,7 +28,6 @@ def save_error_plot(epoch_count, errors_aprox, errors_class, output_dir="results
     plt.legend()
     plt.grid(True)
     
-    # Salva a figura no caminho completo
     plt.savefig(filepath)
     plt.close()
     print("Gráfico salvo com sucesso.")
